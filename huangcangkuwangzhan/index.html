@@ -1,0 +1,1244 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>黄仓库网站-仓储货架与库存管理资料站</title>
+<meta name="description" content="黄仓库网站是一个专注仓储货架选型、库存周转与仓库现场管理的资料站，整理横梁式货架参数、SKU动销率口径、盘点差异处理流程与入库验收清单，含示例数据与操作案例可供核对。">
+<meta name="keywords" content="黄仓库网站">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23b8891f'/%3E%3Cpath d='M6 22h20v4H6zM8 12h4v9H8zM14 12h4v9h-4zM20 12h4v9h-4zM6 8h20v3H6z' fill='%23fff8e6'/%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#1f1a14;
+  --ink-2:#4a4034;
+  --ink-3:#7a6d5c;
+  --paper:#fbf7ef;
+  --paper-2:#f3ecdd;
+  --card:#ffffff;
+  --line:#e0d6c3;
+  --brand:#b8891f;
+  --brand-d:#8f6a12;
+  --brand-l:#f6e8c6;
+  --accent:#2f6b5e;
+  --accent-l:#e3efeb;
+  --warn:#a5432c;
+  --r:10px;
+  --r-s:6px;
+  --sh:0 1px 2px rgba(60,44,20,.06),0 6px 18px rgba(60,44,20,.05);
+  --sp:clamp(14px,2.2vw,22px);
+  --max:1180px;
+  --h-ann:34px;
+  --h-head:62px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{animation:none!important;transition:none!important}
+}
+body{
+  margin:0;font-family:var(--font);color:var(--ink);
+  background:var(--paper);line-height:1.75;font-size:16px;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:var(--brand-d);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3,h4{margin:0;line-height:1.35;font-weight:700}
+p{margin:0 0 .85em}
+p:last-child{margin-bottom:0}
+ul,ol{margin:0 0 .85em;padding-left:1.3em}
+li{margin:.28em 0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--sp)}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:12px;top:12px;z-index:99;background:#fff;padding:8px 14px;border-radius:6px;border:2px solid var(--accent)}
+
+/* 吸顶公告 + 页头 */
+.sticky-top{
+  position:sticky;top:0;z-index:60;
+  background:var(--paper);
+  box-shadow:0 1px 0 var(--line);
+  padding-top:env(safe-area-inset-top);
+}
+.annbar{
+  background:linear-gradient(90deg,#2b2318,#3d3222 70%,#4a3c26);
+  color:#f3e4c2;font-size:13px;min-height:var(--h-ann);
+  display:flex;align-items:center;
+}
+.annbar .wrap{display:flex;align-items:center;gap:10px;width:100%;overflow:hidden;min-height:var(--h-ann)}
+.annbar b{color:#ffd97a;font-weight:700;flex:none}
+.annbar span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.annbar a{color:#ffd97a;flex:none;border:1px solid rgba(255,217,122,.45);padding:1px 8px;border-radius:20px;font-size:12px}
+.annbar a:hover{background:rgba(255,217,122,.15);text-decoration:none}
+
+.header{background:rgba(251,247,239,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.header-in{display:flex;align-items:center;gap:var(--sp);min-height:var(--h-head)}
+.brand{display:flex;align-items:center;gap:10px;flex:none;color:var(--ink)}
+.brand:hover{text-decoration:none}
+.brand svg{width:34px;height:34px;flex:none}
+.brand-txt{display:flex;flex-direction:column;line-height:1.15}
+.brand-name{font-weight:800;font-size:18px;letter-spacing:.5px}
+.brand-sub{font-size:11px;color:var(--ink-3);letter-spacing:1.5px}
+.nav{margin-left:auto;display:flex;align-items:center;gap:2px}
+.nav a{
+  font-size:14.5px;color:var(--ink-2);padding:8px 11px;border-radius:var(--r-s);
+  white-space:nowrap;
+}
+.nav a:hover{background:var(--brand-l);color:var(--brand-d);text-decoration:none}
+.nav a.on{color:var(--brand-d);font-weight:700;background:var(--brand-l)}
+.menu-btn{
+  display:none;margin-left:auto;align-items:center;gap:7px;
+  background:var(--card);border:1px solid var(--line);color:var(--ink);
+  padding:8px 12px;border-radius:var(--r-s);font:inherit;font-size:14px;cursor:pointer;
+}
+.menu-btn .bars{display:inline-block;width:16px;height:11px;position:relative}
+.menu-btn .bars::before,.menu-btn .bars::after,.menu-btn .bars span{content:"";position:absolute;left:0;width:16px;height:2px;background:var(--ink-2);border-radius:2px}
+.menu-btn .bars::before{top:0}
+.menu-btn .bars span{top:4.5px}
+.menu-btn .bars::after{top:9px}
+@media(max-width:900px){
+  .nav{
+    display:none;position:absolute;left:0;right:0;top:100%;
+    background:var(--card);border-bottom:1px solid var(--line);
+    flex-direction:column;align-items:stretch;gap:0;padding:8px var(--sp) 14px;
+    box-shadow:var(--sh);
+  }
+  .nav.open{display:flex}
+  .nav a{padding:11px 12px;font-size:15.5px;border-radius:var(--r-s)}
+  .menu-btn{display:inline-flex}
+  .header-in{position:relative;flex-wrap:wrap}
+}
+@media(max-width:480px){
+  .brand-sub{display:none}
+  .brand-name{font-size:16px}
+}
+
+/* 锚点偏移 */
+section[id],div[id].anchor{scroll-margin-top:calc(var(--h-ann) + var(--h-head) + 14px)}
+
+/* 首屏 */
+.hero{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(1200px 420px at 82% -10%,#f7e6ba 0%,rgba(247,230,186,0) 60%),
+    linear-gradient(180deg,#fdfaf3,#f6efe0);
+  border-bottom:1px solid var(--line);
+}
+.hero-in{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:calc(var(--sp) * 2);
+  align-items:center;padding:clamp(28px,4.5vw,54px) 0;
+  position:relative;z-index:2;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+  color:var(--brand-d);background:var(--brand-l);border:1px solid #e8d5a6;
+  padding:4px 12px;border-radius:20px;letter-spacing:.5px;
+}
+.hero h1{
+  font-size:clamp(30px,4.4vw,46px);letter-spacing:.5px;margin:14px 0 12px;
+}
+.hero h1 .hl{color:var(--brand-d);position:relative}
+.hero-lead{font-size:clamp(15px,1.5vw,17px);color:var(--ink-2);max-width:34em}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 20px;border-radius:var(--r-s);font-weight:700;font-size:15px;
+  border:1px solid transparent;cursor:pointer;transition:transform .15s ease,background .15s ease;
+}
+.btn:hover{transform:translateY(-2px);text-decoration:none}
+.btn-p{background:var(--brand-d);color:#fff}
+.btn-p:hover{background:#7a5a0e}
+.btn-ghost{background:var(--card);color:var(--ink);border-color:var(--line)}
+.btn-ghost:hover{background:var(--brand-l);border-color:#e2cc98}
+.hero-stats{
+  display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:26px;
+  padding-top:18px;border-top:1px dashed #ddcaa2;
+}
+.hero-stats div{display:flex;flex-direction:column}
+.hero-stats b{font-size:21px;color:var(--brand-d);line-height:1.2}
+.hero-stats small{font-size:12.5px;color:var(--ink-3)}
+
+.hero-art{position:relative;min-height:280px}
+.hero-art svg{width:100%;height:auto}
+.float-note{
+  position:absolute;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);padding:8px 12px;box-shadow:var(--sh);font-size:12.5px;color:var(--ink-2);
+}
+.float-note b{display:block;color:var(--brand-d);font-size:14px}
+.fn1{top:4%;right:0}
+.fn2{bottom:6%;left:0}
+@media(max-width:880px){
+  .hero-in{grid-template-columns:1fr;gap:var(--sp)}
+  .hero-art{order:-1;min-height:0;max-width:420px}
+  .float-note{display:none}
+}
+
+/* 主区布局 */
+.layout{
+  display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:calc(var(--sp) * 1.6);
+  padding:calc(var(--sp) * 1.8) 0 calc(var(--sp) * 2);
+}
+.main-col{min-width:0}
+.side-col{min-width:0}
+@media(max-width:1000px){
+  .layout{grid-template-columns:1fr}
+  .side-col{order:2}
+}
+
+/* 板块通用 */
+.block{margin-bottom:calc(var(--sp) * 2)}
+.block-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.block-head h2{font-size:clamp(20px,2.3vw,25px)}
+.block-head .tag{font-size:12px;color:var(--ink-3);border:1px solid var(--line);border-radius:20px;padding:1px 9px}
+.block-desc{color:var(--ink-3);font-size:14px;margin-bottom:16px;max-width:56em}
+
+/* 卡片网格 */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:820px){.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid-3,.grid-2{grid-template-columns:1fr}}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:16px;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease;
+}
+.card:hover{transform:translateY(-3px);border-color:#d6c095;box-shadow:var(--sh)}
+.card h3{font-size:16px;margin-bottom:7px}
+.card p{font-size:14px;color:var(--ink-2)}
+.card .meta{font-size:12.5px;color:var(--ink-3);margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+.pill{display:inline-block;font-size:12px;background:var(--accent-l);color:var(--accent);border-radius:20px;padding:1px 9px;font-weight:600}
+.pill-warn{background:#f8e7e2;color:var(--warn)}
+
+/* 紧凑列表 */
+.list{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.list-item{
+  display:flex;gap:14px;padding:13px 16px;border-bottom:1px solid var(--line);
+  align-items:flex-start;
+}
+.list-item:last-child{border-bottom:none}
+.list-item time{flex:none;font-size:12.5px;color:var(--ink-3);width:74px;font-variant-numeric:tabular-nums;padding-top:2px}
+.list-item .li-body{min-width:0}
+.list-item h3{font-size:15px;margin-bottom:3px}
+.list-item p{font-size:13.5px;color:var(--ink-2)}
+.list-item:hover{background:#fdfaf2}
+
+/* 分类索引 */
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chips a{
+  display:inline-flex;align-items:center;gap:6px;background:var(--card);
+  border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:14px;color:var(--ink-2);
+  transition:transform .15s ease;
+}
+.chips a:hover{transform:translateY(-2px);border-color:#d6c095;background:var(--brand-l);color:var(--brand-d);text-decoration:none}
+.chips a small{color:var(--ink-3);font-size:12px}
+
+/* 深度解析 */
+.article{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:clamp(18px,3vw,34px);
+}
+.article h3{font-size:18px;margin:22px 0 8px;padding-left:11px;border-left:4px solid var(--brand)}
+.article h3:first-of-type{margin-top:10px}
+.article .lead{font-size:16px;color:var(--ink-2)}
+.quote-card{
+  border-left:4px solid var(--accent);background:var(--accent-l);
+  padding:13px 16px;border-radius:0 var(--r-s) var(--r-s) 0;margin:16px 0;font-size:14.5px;color:#204f45;
+}
+.quote-card cite{display:block;font-style:normal;font-size:12.5px;color:#41695f;margin-top:6px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--paper-2);font-weight:700;font-size:13.5px}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* 步骤 */
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.steps li{
+  counter-increment:s;background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:14px 16px 14px 56px;position:relative;margin:0;
+}
+.steps li::before{
+  content:counter(s);position:absolute;left:14px;top:13px;
+  width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;
+}
+.steps h3{font-size:15.5px;margin-bottom:4px}
+.steps p{font-size:14px;color:var(--ink-2)}
+
+/* 对照面板 */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.compare{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.panel header{padding:10px 14px;font-weight:700;font-size:14.5px;border-bottom:1px solid var(--line)}
+.panel.good header{background:var(--accent-l);color:#205a4d}
+.panel.bad header{background:#f8e7e2;color:var(--warn)}
+.panel ul{padding:12px 14px 12px 30px;margin:0;font-size:14px;color:var(--ink-2)}
+
+/* FAQ */
+details.faq{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:0;margin-bottom:10px;overflow:hidden;
+}
+details.faq summary{
+  cursor:pointer;padding:13px 44px 13px 16px;font-weight:700;font-size:15px;
+  list-style:none;position:relative;
+}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{
+  content:"+";position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  font-size:20px;color:var(--brand-d);font-weight:400;line-height:1;
+}
+details.faq[open] summary::after{content:"–"}
+details.faq summary:hover{background:#fdfaf2}
+details.faq .faq-body{padding:0 16px 14px;font-size:14.3px;color:var(--ink-2)}
+details.faq[open]{border-color:#d9c48f;box-shadow:var(--sh)}
+
+/* 评论 */
+.cmts{display:grid;gap:12px}
+.cmt{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;
+}
+.cmt-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.avatar{
+  width:32px;height:32px;border-radius:50%;flex:none;display:flex;align-items:center;
+  justify-content:center;font-weight:800;font-size:13px;color:#fff;background:var(--brand);
+}
+.cmt:nth-child(2n) .avatar{background:var(--accent)}
+.cmt:nth-child(3n) .avatar{background:#8c6d9c}
+.cmt-name{font-weight:700;font-size:14px}
+.cmt-time{font-size:12px;color:var(--ink-3)}
+.cmt p{font-size:14.2px;color:var(--ink-2);margin:0}
+.cmt .at{font-size:12.5px;color:var(--brand-d);background:var(--brand-l);border-radius:4px;padding:0 5px}
+
+/* 标签 */
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tags a{
+  font-size:13px;background:var(--paper-2);border:1px solid var(--line);color:var(--ink-2);
+  border-radius:var(--r-s);padding:5px 11px;
+}
+.tags a:hover{background:var(--brand-l);color:var(--brand-d);border-color:#e2cc98;text-decoration:none}
+
+/* 时间线 */
+.timeline{list-style:none;padding:0;margin:0;position:relative}
+.timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.timeline li{position:relative;padding:0 0 16px 30px;margin:0}
+.timeline li::before{
+  content:"";position:absolute;left:2px;top:6px;width:12px;height:12px;border-radius:50%;
+  background:var(--paper);border:3px solid var(--brand);
+}
+.timeline b{display:block;font-size:15px}
+.timeline time{font-size:12.5px;color:var(--ink-3)}
+.timeline p{font-size:14px;color:var(--ink-2);margin:3px 0 0}
+
+/* 榜单 */
+.rank{list-style:none;counter-reset:r;padding:0;margin:0;display:grid;gap:9px}
+.rank li{
+  counter-increment:r;background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:12px 14px 12px 48px;position:relative;margin:0;
+}
+.rank li::before{
+  content:counter(r);position:absolute;left:13px;top:50%;transform:translateY(-50%);
+  font-size:19px;font-weight:800;color:#c9b078;
+}
+.rank li b{font-size:15px}
+.rank li span{display:block;font-size:13.5px;color:var(--ink-2)}
+.rank li em{font-style:normal;float:right;font-size:13px;color:var(--brand-d);font-weight:700}
+
+/* 侧栏 */
+.side-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:16px;margin-bottom:16px;
+}
+.side-card h2{font-size:16px;margin-bottom:10px}
+.side-nav{list-style:none;padding:0;margin:0}
+.side-nav a{
+  display:block;font-size:14px;color:var(--ink-2);padding:7px 10px;border-radius:var(--r-s);
+  border-left:3px solid transparent;
+}
+.side-nav a:hover{background:var(--paper-2);text-decoration:none}
+.side-nav a.active{background:var(--brand-l);color:var(--brand-d);border-left-color:var(--brand);font-weight:700}
+.side-note{font-size:13px;color:var(--ink-3);margin-top:10px}
+
+/* 搜索 */
+.search{display:flex;gap:8px}
+.search input{
+  flex:1;min-width:0;font:inherit;font-size:14px;padding:9px 12px;
+  border:1px solid var(--line);border-radius:var(--r-s);background:var(--paper);
+  color:var(--ink);
+}
+.search input:focus{background:#fff}
+.search button{
+  font:inherit;font-size:14px;font-weight:700;padding:9px 14px;border-radius:var(--r-s);
+  border:1px solid var(--brand-d);background:var(--brand-d);color:#fff;cursor:pointer;flex:none;
+}
+.search button:hover{background:#7a5a0e}
+#searchOut{margin-top:10px;font-size:13.5px;color:var(--ink-2)}
+#searchOut ul{padding-left:18px;margin:6px 0 0}
+#searchOut li{margin:4px 0}
+#searchOut a{color:var(--brand-d)}
+.no-res{color:var(--warn)}
+
+/* 回到顶部 */
+#toTop{
+  position:fixed;right:18px;bottom:22px;z-index:70;
+  width:44px;height:44px;border-radius:50%;border:1px solid var(--line);
+  background:var(--card);color:var(--brand-d);font-size:20px;cursor:pointer;
+  box-shadow:var(--sh);display:none;align-items:center;justify-content:center;
+}
+#toTop.show{display:flex}
+#toTop:hover{background:var(--brand-l)}
+@media(max-width:560px){
+  #toTop{right:12px;bottom:14px;width:40px;height:40px}
+  body{padding-bottom:env(safe-area-inset-bottom)}
+}
+
+/* 页尾 */
+.footer{background:#26201a;color:#d8cdb9;margin-top:calc(var(--sp) * 2);font-size:14px}
+.footer-in{padding:calc(var(--sp) * 1.8) 0 var(--sp);display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:26px}
+@media(max-width:900px){.footer-in{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.footer-in{grid-template-columns:1fr}}
+.footer h3{font-size:15px;color:#f0e3c8;margin-bottom:10px}
+.footer a{color:#c9bda6;display:block;padding:3px 0;font-size:13.5px}
+.footer a:hover{color:#ffd97a;text-decoration:none}
+.footer .f-brand{display:flex;align-items:center;gap:10px;color:#f0e3c8;font-weight:800;font-size:17px;margin-bottom:10px}
+.footer .f-brand svg{width:30px;height:30px}
+.footer .f-desc{color:#a99a83;font-size:13.5px;max-width:26em;margin-bottom:8px}
+.footer .f-note{color:#8d816d;font-size:12.5px;margin:0}
+.footer-bar{
+  border-top:1px solid #3a3227;padding:14px 0 calc(14px + env(safe-area-inset-bottom));
+  font-size:12.5px;color:#8d816d;display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;
+}
+</style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要内容</a>
+
+<div class="sticky-top">
+  <div class="annbar">
+    <div class="wrap">
+      <b>公告</b>
+      <span>2026-11-07 更新：横梁式货架层载对照表补入 6 组实测数据，入库验收清单增列“温湿度记录”一栏</span>
+      <a href="/#latest">查看更新</a>
+    </div>
+  </div>
+  <header class="header">
+    <div class="wrap header-in">
+      <a class="brand" href="/#top" aria-label="黄仓库网站首页">
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <rect width="40" height="40" rx="8" fill="#b8891f"/>
+          <path d="M7 28h26v4H7zM9 15h5v12H9zM17.5 15h5v12h-5zM26 15h5v12h-5zM7 10h26v3.4H7z" fill="#fff8e6"/>
+          <circle cx="31" cy="9" r="4.4" fill="#2f6b5e"/>
+          <path d="M29.2 9l1.3 1.4 2.2-2.4" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        </svg>
+        <span class="brand-txt">
+          <span class="brand-name">黄仓库网站</span>
+          <span class="brand-sub">仓储货架 · 库存周转</span>
+        </span>
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mainNav">
+        <span class="bars" aria-hidden="true"><span></span></span>菜单
+      </button>
+      <nav class="nav" id="mainNav" aria-label="主题导航">
+        <a href="/#overview">领域概览</a>
+        <a href="/#picked">精选推荐</a>
+        <a href="/#latest">最新更新</a>
+        <a href="/#catalog">分类入口</a>
+        <a href="/#deep">深度解析</a>
+        <a href="/#guide">体验指南</a>
+        <a href="/#faq">常见问题</a>
+        <a href="/#reviews">用户评论</a>
+      </nav>
+    </div>
+  </header>
+</div>
+
+<main id="main">
+
+  <!-- 首屏 -->
+  <section class="hero" id="top" aria-labelledby="hero-h1">
+    <div class="wrap hero-in">
+      <div>
+        <span class="eyebrow">仓储现场资料 · 2026 版口径</span>
+        <h1 id="hero-h1">黄仓库网站<span class="hl">：货架与库存的硬指标</span></h1>
+        <p class="hero-lead">围绕横梁式货架、驶入式货架、托盘位、SKU 动销率与盘点差异率，整理可核对的参数表、验收清单和现场处理流程。数据标来源，口径标版本，判断附对比对象。</p>
+        <div class="hero-actions">
+          <a class="btn btn-p" href="/#deep">读深度解析</a>
+          <a class="btn btn-ghost" href="/#catalog">按分类找资料</a>
+        </div>
+        <div class="hero-stats">
+          <div><b>186</b><small>货架参数条目</small></div>
+          <div><b>42</b><small>份现场清单</small></div>
+          <div><b>11-08</b><small>最近核对日期</small></div>
+          <div><b>9</b><small>个地区仓案例</small></div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 400 300" role="img">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#fdf3d8"/><stop offset="1" stop-color="#f0e0b8"/>
+            </linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#b8891f"/><stop offset="1" stop-color="#8f6a12"/>
+            </linearGradient>
+          </defs>
+          <rect x="8" y="8" width="384" height="284" rx="14" fill="url(#g1)"/>
+          <!-- 地面 -->
+          <path d="M30 246h340" stroke="#d9c79c" stroke-width="2"/>
+          <!-- 三组货架 -->
+          <g stroke="#8f6a12" stroke-width="4" stroke-linecap="round">
+            <path d="M62 108v136M148 108v136M56 112h98M56 168h98M56 222h98"/>
+            <path d="M174 122v122M262 122v122M168 126h100M168 182h100M168 236h100"/>
+            <path d="M288 96v148M372 96v148M282 100h96M282 160h96M282 220h96"/>
+          </g>
+          <!-- 托盘货物 -->
+          <g fill="#c9952e">
+            <rect x="66" y="120" width="82" height="38" rx="3"/>
+            <rect x="66" y="176" width="42" height="38" rx="3" fill="#2f6b5e"/>
+            <rect x="112" y="176" width="36" height="38" rx="3"/>
+            <rect x="66" y="228" width="82" height="30" rx="3" fill="#d7b273"/>
+            <rect x="178" y="134" width="84" height="40" rx="3" fill="#2f6b5e"/>
+            <rect x="178" y="190" width="40" height="40" rx="3"/>
+            <rect x="222" y="190" width="40" height="40" rx="3" fill="#d7b273"/>
+            <rect x="292" y="108" width="80" height="44" rx="3"/>
+            <rect x="292" y="168" width="80" height="44" rx="3" fill="#2f6b5e"/>
+            <rect x="292" y="228" width="38" height="26" rx="3" fill="#d7b273"/>
+            <rect x="334" y="228" width="38" height="26" rx="3"/>
+          </g>
+          <!-- 叉车 -->
+          <g transform="translate(196,240)">
+            <rect x="0" y="14" width="52" height="20" rx="4" fill="#3d3222"/>
+            <rect x="10" y="0" width="20" height="16" rx="3" fill="#4a3c26"/>
+            <path d="M52 22h16v-4h10v26h-6v-8H52z" fill="#4a3c26"/>
+            <circle cx="12" cy="38" r="8" fill="#26201a"/><circle cx="42" cy="38" r="8" fill="#26201a"/>
+          </g>
+          <!-- 标签 -->
+          <g font-family="sans-serif" font-size="11" fill="#7a6d5c">
+            <text x="60" y="94">A 区 · 重型横梁</text>
+            <text x="172" y="112">B 区 · 驶入式</text>
+            <text x="286" y="86">C 区 · 阁楼拣选</text>
+          </g>
+        </svg>
+        <div class="float-note fn1"><b>2,400 托</b>示例日均在库量</div>
+        <div class="float-note fn2"><b>0.32%</b>月度盘点差异率</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap layout">
+    <div class="main-col">
+
+      <!-- 领域概览 -->
+      <section class="block" id="overview" aria-labelledby="h-overview">
+        <div class="block-head">
+          <h2 id="h-overview">领域概览：一座仓库先要答清的四个数</h2>
+          <span class="tag">基础口径</span>
+        </div>
+        <p class="block-desc">仓库建设与改造绕不开托盘位数量、地面承重、可用净高、日均吞吐。四项参数互相牵制，先定哪一项，决定了货架选型与人力配置的走向。</p>
+        <div class="grid-3">
+          <div class="card">
+            <h3>托盘位与地面承重</h3>
+            <p>普通水泥地面多为 3 吨/平方米，加铺金刚砂可到 5 吨。重型横梁货架单柱荷载超过地面限值时，须加钢板或做桩基。</p>
+            <div class="meta"><span class="pill">选型前置</span><span>2026-10-20 核对</span></div>
+          </div>
+          <div class="card">
+            <h3>可用净高与层数</h3>
+            <p>净高 9 米仓常见做 4 层横梁货架，每层有效 1.8 米；净高 12 米可做 5 层。消防喷淋会吃掉 40—60 厘米。</p>
+            <div class="meta"><span class="pill">改造常问</span><span>2026-10-24 核对</span></div>
+          </div>
+          <div class="card">
+            <h3>SKU 数量与动销率</h3>
+            <p>SKU 动销率按“近 30 天有出库的 SKU 数 ÷ 在库 SKU 总数”计算。低于 55% 时，拣选路径和货位分配需要重排。</p>
+            <div class="meta"><span class="pill">库存考核</span><span>2026-11-02 核对</span></div>
+          </div>
+          <div class="card">
+            <h3>日均吞吐与月台</h3>
+            <p>一个标准卸货月台日均可处理 60—80 托，超出后车辆排队时间按每小时递增约 1.5 台。</p>
+            <div class="meta"><span class="pill">效率指标</span><span>2026-10-29 核对</span></div>
+          </div>
+          <div class="card">
+            <h3>盘点频率与差异率</h3>
+            <p>循环盘点把全年差异压在 0.5% 以内较常见；全面停产盘点差异率参考值 0.2%—0.4%。</p>
+            <div class="meta"><span class="pill">库存准确</span><span>2026-11-05 核对</span></div>
+          </div>
+          <div class="card">
+            <h3>人机配比</h3>
+            <p>人工拣选仓常见 1 名拣货员配 1.6 台拣选车；引入 AMR 后，同等人效可提升到 2.3 倍，但充电位要预留。</p>
+            <div class="meta"><span class="pill">人力配置</span><span>2026-10-31 核对</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 精选内容推荐 -->
+      <section class="block" id="picked" aria-labelledby="h-picked">
+        <div class="block-head">
+          <h2 id="h-picked">精选内容推荐</h2>
+          <span class="tag">编辑挑出</span>
+        </div>
+        <p class="block-desc">从参数表、清单与案例中挑出近期被调用最多的六份，每份都能直接拿到现场用。</p>
+        <div class="grid-2">
+          <div class="card">
+            <h3><a href="/#deep">横梁式货架层载实测：3 组梁与 6 组数据</a></h3>
+            <p>同一跨距下，100×50 与 120×50 横梁的挠度差在 2.1 毫米，直接决定 1.5 吨托盘能否上第二层。</p>
+            <div class="meta"><span class="pill">参数核对</span><span>2026-11-06</span></div>
+          </div>
+          <div class="card">
+            <h3><a href="/#guide">入库验收七步清单（含温湿度记录）</a></h3>
+            <p>从车辆停靠到上架扫码，每步列了核对项与常见退单理由，附一张可打印的验收单。</p>
+            <div class="meta"><span class="pill">现场清单</span><span>2026-11-07</span></div>
+          </div>
+          <div class="card">
+            <h3><a href="/#latest">驶入式货架适合什么货：三个判断条件</a></h3>
+            <p>SKU 少于 40 个、整托进出、单托重量稳定在 1 吨上下，这三条同时成立，驶入式的空间收益才明显。</p>
+            <div class="meta"><span class="pill">选型判断</span><span>2026-11-03</span></div>
+          </div>
+          <div class="card">
+            <h3><a href="/#reviews">拣选路径重排后，人效从 92 提升到 118 行/小时</a></h3>
+            <p>华东一家日化仓把 A 类商品从 3 巷道挪到 1 巷道，拣选距离缩短 41%，用两周完成迁移。</p>
+            <div class="meta"><span class="pill">案例</span><span>2026-10-28</span></div>
+          </div>
+          <div class="card">
+            <h3><a href="/#faq">盘点差异超过 1% 先查哪三处</a></h3>
+            <p>先查收货未上架、再查调拨单未过账、最后查混装托盘。三处能解释多数差异来源。</p>
+            <div class="meta"><span class="pill">差异处理</span><span>2026-11-04</span></div>
+          </div>
+          <div class="card">
+            <h3><a href="/#rank">2026 年秋季仓库改造案例榜</a></h3>
+            <p>按改造前后托盘位增幅、投入回收期两项指标排序，覆盖食品、五金、汽配三个行业。</p>
+            <div class="meta"><span class="pill">榜单</span><span>2026-11-01</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 最新更新 -->
+      <section class="block" id="latest" aria-labelledby="h-latest">
+        <div class="block-head">
+          <h2 id="h-latest">最新更新</h2>
+          <span class="tag">按日期倒排</span>
+        </div>
+        <div class="list">
+          <article class="list-item">
+            <time datetime="2026-11-07">11-07</time>
+            <div class="li-body">
+              <h3>入库验收清单增列“温湿度记录”栏</h3>
+              <p>针对食品与医药类入库，收货时须记录车厢温度与仓内干球温度。验收单第 4 步新增两行填报位。</p>
+            </div>
+          </article>
+          <article class="list-item">
+            <time datetime="2026-11-06">11-06</time>
+            <div class="li-body">
+              <h3>横梁式货架层载对照表补入 6 组实测挠度</h3>
+              <p>数据取自宁波一货架厂的 2026 年 9 月型式试验报告，含 100×50、120×50、140×50 三种截面。</p>
+            </div>
+          </article>
+          <article class="list-item">
+            <time datetime="2026-11-05">11-05</time>
+            <div class="li-body">
+              <h3>盘点差异率口径统一为“金额差异率”</h3>
+              <p>原按数量统计的差异率与财务口径不一致，现改按金额计算，并在页面标注换算方法。</p>
+            </div>
+          </article>
+          <article class="list-item">
+            <time datetime="2026-11-03">11-03</time>
+            <div class="li-body">
+              <h3>驶入式货架选型条件补案例：汽配仓 1,120 托</h3>
+              <p>该仓把 7 条巷道压到 4 条，通道面积减少 38%，但补货效率下降 12%，取舍写在案例末尾。</p>
+            </div>
+          </article>
+          <article class="list-item">
+            <time datetime="2026-11-01">11-01</time>
+            <div class="li-body">
+              <h3>秋季改造案例榜上线，收录 9 个仓</h3>
+              <p>榜单按托盘位增幅与回收期排序，每个案例给出改造预算区间与施工周期。</p>
+            </div>
+          </article>
+          <article class="list-item">
+            <time datetime="2026-10-29">10-29</time>
+            <div class="li-body">
+              <h3>月台排队时间估算表更新</h3>
+              <p>按 4.2 米厢车与 9.6 米厢车分列，加入装卸设备数量变量，单月台日处理量上限标到 82 托。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 分类入口 -->
+      <section class="block" id="catalog" aria-labelledby="h-catalog">
+        <div class="block-head">
+          <h2 id="h-catalog">分类入口</h2>
+          <span class="tag">10 个频道</span>
+        </div>
+        <p class="block-desc">按现场问题归类，点进任意频道可看该主题下的参数、清单与案例。</p>
+        <div class="chips">
+          <a href="/#deep">横梁式货架参数 <small>38</small></a>
+          <a href="/#deep">驶入式货架 <small>21</small></a>
+          <a href="/#guide">入库验收流程 <small>17</small></a>
+          <a href="/#faq">SKU 动销率 <small>14</small></a>
+          <a href="/#faq">盘点差异处理 <small>23</small></a>
+          <a href="/#guide">拣选路径优化 <small>19</small></a>
+          <a href="/#latest">托盘位测算 <small>11</small></a>
+          <a href="/#latest">月台排队管理 <small>9</small></a>
+          <a href="/#reviews">仓储人力配比 <small>15</small></a>
+          <a href="/#rank">仓库改造案例 <small>12</small></a>
+        </div>
+      </section>
+
+      <!-- 深度解析 -->
+      <section class="block" id="deep" aria-labelledby="h-deep">
+        <div class="block-head">
+          <h2 id="h-deep">深度解析：层载、动销与差异率的三个可反驳判断</h2>
+          <span class="tag">主体阅读</span>
+        </div>
+        <article class="article">
+          <p class="lead">仓储改造中最容易被拍脑袋决定的三个数，是货架层载、SKU 动销率和盘点差异率。以下三个判断都附了核对路径，若数据不同，结论应当推翻。</p>
+
+          <h3>判断一：1.5 吨托盘上第二层，100×50 横梁够用，但余量只有 8%</h3>
+          <p>宁波某货架厂 2026 年 9 月型式试验报告显示，跨距 2.7 米、均布荷载 1.5 吨条件下，100×50×1.5 毫米横梁实测最大挠度为 7.9 毫米，规范限值取跨距的 1/300，即 9 毫米。余量 1.1 毫米，约 8%。换成 120×50×1.5 毫米，同条件挠度降到 5.8 毫米，余量 32%。</p>
+          <div class="quote-card">
+            “挠度限值按 1/300 算，是行业通行做法；但叉车碰撞后梁的初始变形没有计入，实际安全余量应再打折。”
+            <cite>—— 货架结构工程师 周立成，2026-09-18 技术交底会记录</cite>
+          </div>
+          <p>可核对路径：查货架出厂型式试验报告中的挠度一项，核对跨距、荷载分布方式（均布还是集中）、钢材牌号（Q235B 与 Q355B 差异明显）。若报告只写“合格”不写数值，这份报告不能支撑选型。</p>
+
+          <h3>判断二：SKU 动销率低于 55% 时，先动货位，别急着上自动化</h3>
+          <p>动销率低，常见原因是货位分配沿用了建仓时的 ABC 分区，而商品结构已经变化。杭州一食品仓 2026 年 8 月盘点，3,180 个 SKU 中近 30 天有出库的仅 1,412 个，动销率 44.4%。A 类区仍摆着 2024 年的礼盒，日均出库 3 箱；而销量前 20 的坚果类被挤在 C 区第七巷道。</p>
+          <p>该仓用两周把 A 类前 200 个 SKU 迁到 1—2 巷道，拣选行走距离从日均 9.4 公里降到 5.5 公里。同期询价的 AMR 方案报价 86 万元，回收期测算 3.6 年；而货位重排投入 1.2 万元，两个月内见效。判断成立的条件是：动销率低由布局造成，而非需求本身萎缩。若出库订单总行数同比下滑，先做货位调整就只是把慢货搬得更近。</p>
+
+          <h3>判断三：盘点差异率按数量算会低估问题，按金额算才看得出风险</h3>
+          <p>同一批数据，两种口径能差出一个数量级。举例：某仓 10 月盘点，螺丝少 4,000 颗，单价 0.03 元；一款电机少 2 台，单价 4,800 元。按数量算差异 4,002 件，总库存 86,000 件，差异率 4.65%；按金额算差异 9,720 元，库存总额 412 万元，差异率 0.24%。数量口径把低值高频件放大，金额口径把高值件放大，两者都不能单独用。</p>
+          <div class="table-scroll">
+            <table>
+              <caption style="text-align:left;font-size:12.5px;color:#7a6d5c;padding:4px 0">同一盘点结果的两种口径对照（示例数据）</caption>
+              <thead>
+                <tr><th>统计口径</th><th>差异量</th><th>总量</th><th>差异率</th><th>暴露的问题</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>按数量</td><td class="num">4,002 件</td><td class="num">86,000 件</td><td class="num">4.65%</td><td>小件计数流程</td></tr>
+                <tr><td>按金额</td><td class="num">9,720 元</td><td class="num">412 万元</td><td class="num">0.24%</td><td>高值件管控</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>建议同时保留两套数字，并在月度复盘时分开讨论：数量差异率交给收货与拣选班组，金额差异率交给财务与安保。把两套数合成一个“综合差异率”只会让责任边界模糊。</p>
+
+          <h3>三个判断的共同前提</h3>
+          <p>上述结论都建立在仓库已具备基础数据记录的前提上：货架有编号、SKU 有动销记录、盘点有单据留痕。缺任何一项，先补记录再谈优化。广州一五金仓 2026 年 7 月尝试按动销率重排货位，因 40% 的 SKU 近 90 天无出库记录，重排后两周内发生 11 次找货超时，最终回滚。</p>
+        </article>
+      </section>
+
+      <!-- 体验指南 -->
+      <section class="block" id="guide" aria-labelledby="h-guide">
+        <div class="block-head">
+          <h2 id="h-guide">体验指南：新仓首月按这五步走</h2>
+          <span class="tag">操作步骤</span>
+        </div>
+        <p class="block-desc">以一座 6,000 平方米、计划 2,400 个托盘位的新仓为例，首月排程如下，每步附可核对产出物。</p>
+        <ol class="steps">
+          <li>
+            <h3>第 1 周：量净高、测地面、定货架形式</h3>
+            <p>用激光测距仪在每 10 米取一点，记录梁下净高与喷淋头高度。地面用回弹仪抽测 8 个点。产出：净高分布图、地面承重报告、货架选型建议一页。</p>
+          </li>
+          <li>
+            <h3>第 2 周：画货位编码规则并贴标</h3>
+            <p>建议“区-巷道-列-层-位”五段编码，如 A-03-12-2-04。编码表先给收货组试用三天，再定稿印刷。</p>
+          </li>
+          <li>
+            <h3>第 3 周：跑一轮模拟入库与拣选</h3>
+            <p>取 200 个 SKU 做两轮模拟，记录拣选行/小时与差错数。低于 90 行/小时，回头查货位分配和标签可读性。</p>
+          </li>
+          <li>
+            <h3>第 4 周：首轮循环盘点，先盘高值区</h3>
+            <p>首轮只盘金额占比前 20% 的货位，差异逐条登记原因。产出：差异原因分类表，作为下月培训材料。</p>
+          </li>
+          <li>
+            <h3>月末：核算人效与月台周转</h3>
+            <p>统计每人每日处理托数、单月台日均车次。两项数据与开仓前测算对比，偏差超过 15% 的项进入整改清单。</p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- 对照面板 -->
+      <section class="block" id="compare" aria-labelledby="h-compare">
+        <div class="block-head">
+          <h2 id="h-compare">选型对照：横梁式与驶入式怎么定</h2>
+          <span class="tag">对照面板</span>
+        </div>
+        <div class="compare">
+          <div class="panel good">
+            <header>横梁式货架适合的情形</header>
+            <ul>
+              <li>SKU 超过 300 个，且单个托盘混放不超过 2 种货</li>
+              <li>需要随时抽检、随时取用任意一托</li>
+              <li>地面承重 3 吨/平方米以上，净高 8 米以上</li>
+              <li>补货频率高，日均入库超 40 托</li>
+              <li>预算按每托盘位 480—680 元估算</li>
+            </ul>
+          </div>
+          <div class="panel bad">
+            <header>驶入式货架需要让步的地方</header>
+            <ul>
+              <li>SKU 最好少于 40 个，否则先进后出会压货</li>
+              <li>叉车须进入货架内部作业，碰撞风险更高</li>
+              <li>单巷道存同一批次，批次管理粗放</li>
+              <li>补货集中时段会出现等待，效率下降约 10%—15%</li>
+              <li>造价每托盘位约 300—420 元，但改造灵活性差</li>
+            </ul>
+          </div>
+        </div>
+        <p style="font-size:13.5px;color:var(--ink-3);margin-top:12px">价格区间取自 2026 年 10 月华东三家货架厂的报价均值，含安装不含运输。</p>
+      </section>
+
+      <!-- 榜单 -->
+      <section class="block" id="rank" aria-labelledby="h-rank">
+        <div class="block-head">
+          <h2 id="h-rank">2026 年秋季仓库改造案例榜</h2>
+          <span class="tag">按托盘位增幅</span>
+        </div>
+        <ol class="rank">
+          <li><em>+68%</em><b>苏州汽配仓：驶入式改横梁 + 阁楼</b><span>托盘位从 1,400 增至 2,352，施工 34 天，预算 118 万元。</span></li>
+          <li><em>+51%</em><b>佛山食品仓：加建二层拣选平台</b><span>净高 11.2 米，二层做拆零拣选，托盘位 1,860 增至 2,810。</span></li>
+          <li><em>+44%</em><b>合肥五金仓：通道缩窄至 2.9 米</b><span>改用前移式叉车，巷道由 5 条增至 8 条，人效基本持平。</span></li>
+          <li><em>+37%</em><b>青岛日化仓：A 类商品靠近月台</b><span>未增货架，仅重排货位，拣选距离缩短 41%。</span></li>
+          <li><em>+29%</em><b>西安医药仓：循环盘点替代停产盘点</b><span>托盘位不变，年盘点停工时间从 6 天压到 1.5 天。</span></li>
+        </ol>
+      </section>
+
+      <!-- FAQ -->
+      <section class="block" id="faq" aria-labelledby="h-faq">
+        <div class="block-head">
+          <h2 id="h-faq">常见问题</h2>
+          <span class="tag">问答折叠</span>
+        </div>
+
+        <details class="faq">
+          <summary>横梁式货架的层载标注 2 吨，实际能放多少？</summary>
+          <div class="faq-body">
+            <p>标注值通常是均布荷载，前提是托盘货物均匀分布在两根横梁上。若货物集中堆在跨中，实际可用荷载要按集中荷载折算，常见折减到标注值的 60%—70%。选型时把单托重量、跨距、横梁截面三项一起报给货架厂，让其出具计算书。</p>
+          </div>
+        </details>
+
+        <details class="faq">
+          <summary>SKU 动销率怎么算才和考核口径对得上？</summary>
+          <div class="faq-body">
+            <p>动销率 = 近 30 天有出库记录的 SKU 数 ÷ 期末在库 SKU 总数。注意两个坑：出库记录要含退货冲销后的净出库；在库 SKU 要剔除已冻结的残次品。若考核用金额口径，则改用“动销金额 ÷ 库存金额”，两种口径不能混用。</p>
+          </div>
+        </details>
+
+        <details class="faq">
+          <summary>盘点差异超过 1% 该先查哪里？</summary>
+          <div class="faq-body">
+            <p>建议按顺序查三处：第一，收货区待上架货品是否计入在库数；第二，调拨单和退货单是否已过账；第三，托盘混装是否把两个 SKU 记在同一货位。三处能解释多数差异。查完再动用录像回查，成本高但常能定位到具体操作时点。</p>
+          </div>
+        </details>
+
+        <details class="faq">
+          <summary>拣选路径重排一般要多久，会停业吗？</summary>
+          <div class="faq-body">
+            <p>以 2,000 个托盘位的仓为例，重排 A 类前 300 个货位通常需要 5—8 个夜班，白天正常收发货不受影响。关键是提前把新货位编码打印好，并在 WMS 里切换货位映射的时间点选在夜间，避免白天两套编码并存。</p>
+          </div>
+        </details>
+
+        <details class="faq">
+          <summary>月台排队时间长，是加月台还是加装卸设备？</summary>
+          <div class="faq-body">
+            <p>先算单月台日处理量上限。一个标准卸货月台配 1 台电动地牛，日处理约 60—82 托；若车辆到货集中在上午 9—11 点，瓶颈往往在时段而非总量。把收货预约窗口从一个小时拆成 20 分钟一档，可比加建月台更快见效，后者还涉及建筑报批。</p>
+          </div>
+        </details>
+
+        <details class="faq">
+          <summary>货架被叉车撞过，变形多少必须换梁？</summary>
+          <div class="faq-body">
+            <p>横梁侧向弯曲超过跨距的 1/500，或上翼缘出现裂纹，建议直接更换。立柱底部变形超过 5 毫米或出现倾斜，须由货架厂评估，不能自行校正后继续使用。日常用红漆在立柱 1 米高处画警戒线，碰撞后目视即可初判。</p>
+          </div>
+        </details>
+      </section>
+
+      <!-- 用户评论 -->
+      <section class="block" id="reviews" aria-labelledby="h-reviews">
+        <div class="block-head">
+          <h2 id="h-reviews">用户评论</h2>
+          <span class="tag">现场反馈</span>
+        </div>
+        <div class="cmts">
+          <article class="cmt">
+            <div class="cmt-top">
+              <span class="avatar" aria-hidden="true">陈</span>
+              <span class="cmt-name">陈师傅 · 收货主管</span>
+              <span class="cmt-time">2026-11-07</span>
+            </div>
+            <p>入库验收清单里“温湿度记录”这一栏加得对。上周一批冷藏调料到货，车厢温度 12℃，仓内实测 6℃，差 6 度，按新清单直接拍照留证退了 3 托。<span class="at">入库验收流程</span></p>
+          </article>
+          <article class="cmt">
+            <div class="cmt-top">
+              <span class="avatar" aria-hidden="true">林</span>
+              <span class="cmt-name">林晓 · 仓储规划</span>
+              <span class="cmt-time">2026-11-06</span>
+            </div>
+            <p>深度解析里“1.5 吨上第二层余量只有 8%”这个数我拿型式试验报告核过，跨距 2.7 米、100×50 截面确实是 7.9 毫米挠度。不过我们仓叉车碰撞频繁，实际按 1 吨上限用，安全余量更稳。</p>
+          </article>
+          <article class="cmt">
+            <div class="cmt-top">
+              <span class="avatar" aria-hidden="true">赵</span>
+              <span class="cmt-name">赵一鸣 · 第三方物流</span>
+              <span class="cmt-time">2026-11-05</span>
+            </div>
+            <p>动销率 55% 这条线未必通用。我们做家电售后件，SKU 多、单量小，动销率常年在 38% 左右，但缺货成本极高，不能按“先动货位”处理。得看行业补货周期。</p>
+          </article>
+          <article class="cmt">
+            <div class="cmt-top">
+              <span class="avatar" aria-hidden="true">吴</span>
+              <span class="cmt-name">吴敏 · 医药仓质管</span>
+              <span class="cmt-time">2026-11-04</span>
+            </div>
+            <p>盘点差异按金额算的思路实用。上个月电机少 2 台，金额 9,600 元，数量差异率却只有 0.3%，差点被忽略。现在两份报表分开交。<span class="at">盘点差异处理</span></p>
+          </article>
+          <article class="cmt">
+            <div class="cmt-top">
+              <span class="avatar" aria-hidden="true">周</span>
+              <span class="cmt-name">周立成 · 结构工程师</span>
+              <span class="cmt-time">2026-11-03</span>
+            </div>
+            <p>驶入式那个汽配仓案例，补货效率降 12% 写得实在。很多方案只算托盘位增幅，不算取货等待。建议读者先拿 40 个 SKU 做两周模拟再定。</p>
+          </article>
+          <article class="cmt">
+            <div class="cmt-top">
+              <span class="avatar" aria-hidden="true">何</span>
+              <span class="cmt-name">何雨 · 电商仓运营</span>
+              <span class="cmt-time">2026-11-02</span>
+            </div>
+            <p>拣选路径那篇说得轻巧，重排货位要先把 WMS 的库位映射改对。我们上次白天切换，两套编码并行，拣货员三次找错货。夜班切换这句话值钱。</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 相关资讯 -->
+      <section class="block" id="news" aria-labelledby="h-news">
+        <div class="block-head">
+          <h2 id="h-news">相关资讯</h2>
+          <span class="tag">行业动态</span>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <h3>华东三货架厂 11 月报价上调 4%</h3>
+            <p>受型钢价格影响，100×50 横梁每米报价从 46 元涨到 48 元，安装费未变。询价时要求拆分材料与安装两项。</p>
+            <div class="meta"><span>2026-11-06</span></div>
+          </div>
+          <div class="card">
+            <h3>新版仓储服务规范 10 月 30 日实施</h3>
+            <p>明确托盘货物标识须含批次与效期，旧标识过渡期到 2026 年 12 月 31 日。</p>
+            <div class="meta"><span>2026-10-30</span></div>
+          </div>
+          <div class="card">
+            <h3>前移式叉车租赁价回落至 4,200 元/月</h3>
+            <p>较 9 月下降 300 元，含基础保养不含电池更换。适合旺季临时补运力的仓。</p>
+            <div class="meta"><span>2026-10-27</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 相关推荐 -->
+      <section class="block" id="rel" aria-labelledby="h-rel">
+        <div class="block-head">
+          <h2 id="h-rel">相关推荐</h2>
+          <span class="tag">标签索引</span>
+        </div>
+        <div class="tags">
+          <a href="/#deep">横梁式货架层载计算</a>
+          <a href="/#faq">SKU 动销率计算口径</a>
+          <a href="/#guide">入库验收单模板</a>
+          <a href="/#faq">盘点差异原因分类</a>
+          <a href="/#deep">驶入式货架适用条件</a>
+          <a href="/#guide">拣选路径重排步骤</a>
+          <a href="/#rank">仓库改造投入回收期</a>
+          <a href="/#latest">月台收货预约窗口</a>
+          <a href="/#guide">货位五段编码规则</a>
+          <a href="/#reviews">仓储人效提升案例</a>
+        </div>
+      </section>
+
+      <!-- 时间线补充 -->
+      <section class="block" id="timeline" aria-labelledby="h-timeline">
+        <div class="block-head">
+          <h2 id="h-timeline">近期事件时间线</h2>
+          <span class="tag">可核对节点</span>
+        </div>
+        <ul class="timeline">
+          <li>
+            <time datetime="2026-11-07">2026-11-07</time>
+            <b>验收清单第 4 步改版</b>
+            <p>新增车厢温度、仓内干球温度两行；同日下发到 6 个收货组试用。</p>
+          </li>
+          <li>
+            <time datetime="2026-11-02">2026-11-02</time>
+            <b>苏州汽配仓改造验收</b>
+            <p>托盘位 2,352 个实测通过，叉车通道最窄处 3.1 米，比图纸多出 0.2 米。</p>
+          </li>
+          <li>
+            <time datetime="2026-10-28">2026-10-28</time>
+            <b>华东日化仓完成 A 类货位迁移</b>
+            <p>拣选距离由 9.4 公里降至 5.5 公里，拣选行/小时从 92 升到 118。</p>
+          </li>
+          <li>
+            <time datetime="2026-10-20">2026-10-20</time>
+            <b>新版仓储服务规范发布</b>
+            <p>托盘标识要求生效，过渡期至 12 月 31 日；旧标识需覆盖新标签。</p>
+          </li>
+        </ul>
+      </section>
+
+    </div>
+
+    <!-- 侧栏 -->
+    <aside class="side-col" aria-label="侧栏工具">
+      <div class="side-card">
+        <h2>站内搜索</h2>
+        <form class="search" id="searchForm" role="search">
+          <input type="search" id="searchInput" placeholder="输入关键词，如：层载、动销率、盘点" aria-label="站内搜索关键词">
+          <button type="submit">查找</button>
+        </form>
+        <div id="searchOut" aria-live="polite"></div>
+        <p class="side-note">本地检索页面内板块与条目，不做网络请求。</p>
+      </div>
+
+      <div class="side-card">
+        <h2>栏目导航</h2>
+        <ul class="side-nav" id="sideNav">
+          <li><a href="/#overview">领域概览</a></li>
+          <li><a href="/#picked">精选内容推荐</a></li>
+          <li><a href="/#latest">最新更新</a></li>
+          <li><a href="/#catalog">分类入口</a></li>
+          <li><a href="/#deep">深度解析</a></li>
+          <li><a href="/#guide">体验指南</a></li>
+          <li><a href="/#compare">选型对照</a></li>
+          <li><a href="/#rank">改造案例榜</a></li>
+          <li><a href="/#faq">常见问题</a></li>
+          <li><a href="/#reviews">用户评论</a></li>
+          <li><a href="/#news">相关资讯</a></li>
+          <li><a href="/#rel">相关推荐</a></li>
+        </ul>
+      </div>
+
+      <div class="side-card">
+        <h2>本期数据说明</h2>
+        <p class="side-note">货架挠度取自 2026 年 9 月型式试验报告；价格区间取自 10 月华东三家厂报价均值；仓储案例为示例条目，人物姓名为化名。</p>
+        <p class="side-note">更新时间：2026-11-07，对应正文“入库验收清单增列温湿度记录”一项。</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-in">
+      <div>
+        <div class="f-brand">
+          <svg viewBox="0 0 40 40" aria-hidden="true">
+            <rect width="40" height="40" rx="8" fill="#b8891f"/>
+            <path d="M7 28h26v4H7zM9 15h5v12H9zM17.5 15h5v12h-5zM26 15h5v12h-5zM7 10h26v3.4H7z" fill="#fff8e6"/>
+          </svg>
+          黄仓库网站
+        </div>
+        <p class="f-desc">从货架参数到盘点差异率，用可核对的数字和现场清单说话，帮仓库管理者少走一轮返工。</p>
+        <p class="f-note">示例数据说明：页面中案例、评论、企业与人物姓名均为示例条目，参数表与规范条目按公开资料整理，使用前请以实际检测报告与合同为准。</p>
+      </div>
+      <div>
+        <h3>参数与选型</h3>
+        <a href="/#overview">领域概览</a>
+        <a href="/#deep">横梁式货架层载</a>
+        <a href="/#compare">驶入式与横梁式对照</a>
+        <a href="/#catalog">分类入口</a>
+      </div>
+      <div>
+        <h3>现场操作</h3>
+        <a href="/#guide">入库验收流程</a>
+        <a href="/#faq">盘点差异处理</a>
+        <a href="/#faq">SKU 动销率口径</a>
+        <a href="/#guide">拣选路径重排</a>
+      </div>
+      <div>
+        <h3>案例与动态</h3>
+        <a href="/#rank">改造案例榜</a>
+        <a href="/#latest">最新更新</a>
+        <a href="/#news">相关资讯</a>
+        <a href="/#reviews">用户评论</a>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>© 2026 黄仓库网站 · 版权所有</span>
+      <span>内容更新：2026-11-07</span>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" type="button" aria-label="回到顶部">↑</button>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 移动菜单
+  var btn = document.getElementById('menuBtn');
+  var nav = document.getElementById('mainNav');
+  if(btn && nav){
+    btn.addEventListener('click', function(){
+      var open = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.addEventListener('click', function(e){
+      if(e.target.tagName === 'A' && nav.classList.contains('open')){
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+      }
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && nav.classList.contains('open')){
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        btn.focus();
+      }
+    });
+  }
+
+  // 滚动高亮
+  var links = Array.prototype.slice.call(document.querySelectorAll('#sideNav a'));
+  var sections = links.map(function(a){
+    var id = a.getAttribute('href').split('#')[1];
+    return document.getElementById(id);
+  });
+  var toTop = document.getElementById('toTop');
+
+  function onScroll(){
+    var y = window.scrollY || window.pageYOffset;
+    var offset = 130;
+    var cur = -1;
+    for(var i=0;i<sections.length;i++){
+      var el = sections[i];
+      if(el && el.getBoundingClientRect().top + y - offset <= y){
+        cur = i;
+      }
+    }
+    links.forEach(function(a,i){
+      if(i === cur){ a.classList.add('active'); a.setAttribute('aria-current','true'); }
+      else { a.classList.remove('active'); a.removeAttribute('aria-current'); }
+    });
+    if(y > 420){ toTop.classList.add('show'); }
+    else { toTop.classList.remove('show'); }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if(toTop){
+    toTop.addEventListener('click', function(){
+      window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'});
+    });
+  }
+
+  // 平滑滚动，已由 CSS scroll-behavior 处理，这里补不支持的情况
+  if(!('scrollBehavior' in document.documentElement.style) && !reduce){
+    document.querySelectorAll('a[href^="/#"]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        var id = a.getAttribute('href').split('#')[1];
+        var el = document.getElementById(id);
+        if(el){
+          e.preventDefault();
+          window.scrollTo(0, el.getBoundingClientRect().top + window.pageYOffset - 96);
+        }
+      });
+    });
+  }
+
+  // 本地搜索
+  var form = document.getElementById('searchForm');
+  var input = document.getElementById('searchInput');
+  var out = document.getElementById('searchOut');
+  var index = [
+    {t:'横梁式货架层载实测与挠度对照', id:'deep'},
+    {t:'驶入式货架适用条件与案例', id:'deep'},
+    {t:'SKU 动销率计算口径', id:'faq'},
+    {t:'盘点差异率按金额还是按数量', id:'deep'},
+    {t:'入库验收七步清单与温湿度记录', id:'guide'},
+    {t:'拣选路径重排步骤', id:'guide'},
+    {t:'货位五段编码规则', id:'guide'},
+    {t:'月台排队与收货预约窗口', id:'faq'},
+    {t:'托盘位测算与地面承重', id:'overview'},
+    {t:'仓库改造案例榜与回收期', id:'rank'},
+    {t:'横梁式与驶入式选型对照', id:'compare'},
+    {t:'用户评论与现场反馈', id:'reviews'},
+    {t:'近期事件时间线', id:'timeline'},
+    {t:'华东货架厂报价与租赁动态', id:'news'}
+  ];
+
+  function esc(s){ return s.replace(/[&<>"]/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]; }); }
+
+  if(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var q = (input.value || '').trim();
+      if(!q){ out.innerHTML = '<p class="no-res">请输入关键词再查找。</p>'; return; }
+      var ql = q.toLowerCase();
+      var hits = index.filter(function(it){ return it.t.toLowerCase().indexOf(ql) > -1; });
+      if(hits.length === 0){
+        out.innerHTML = '<p class="no-res">没有找到与“' + esc(q) + '”匹配的条目。可试：“层载”“动销率”“盘点”“验收”“货位”。</p>';
+        return;
+      }
+      var html = '<p>找到 ' + hits.length + ' 条：</p><ul>';
+      hits.forEach(function(it){
+        html += '<li><a href="/#' + it.id + '">' + esc(it.t) + '</a></li>';
+      });
+      html += '</ul>';
+      out.innerHTML = html;
+    });
+  }
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"黄仓库网站",
+  "description":"专注仓储货架选型、库存周转与仓库现场管理的资料站，整理横梁式货架参数、SKU动销率口径、盘点差异处理流程与入库验收清单。",
+  "inLanguage":"zh-CN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"横梁式货架的层载标注 2 吨，实际能放多少？",
+      "acceptedAnswer":{"@type":"Answer","text":"标注值通常是均布荷载，前提是托盘货物均匀分布在两根横梁上。若货物集中堆在跨中，实际可用荷载要按集中荷载折算，常见折减到标注值的 60%—70%。选型时把单托重量、跨距、横梁截面三项一起报给货架厂，让其出具计算书。"}
+    },
+    {
+      "@type":"Question",
+      "name":"SKU 动销率怎么算才和考核口径对得上？",
+      "acceptedAnswer":{"@type":"Answer","text":"动销率 = 近 30 天有出库记录的 SKU 数 ÷ 期末在库 SKU 总数。出库记录要含退货冲销后的净出库，在库 SKU 要剔除已冻结的残次品。若考核用金额口径，则改用动销金额除以库存金额。"}
+    },
+    {
+      "@type":"Question",
+      "name":"盘点差异超过 1% 该先查哪里？",
+      "acceptedAnswer":{"@type":"Answer","text":"建议按顺序查三处：收货区待上架货品是否计入在库数；调拨单和退货单是否已过账；托盘混装是否把两个 SKU 记在同一货位。三处能解释多数差异，再动用录像回查。"}
+    },
+    {
+      "@type":"Question",
+      "name":"拣选路径重排一般要多久，会停业吗？",
+      "acceptedAnswer":{"@type":"Answer","text":"以 2,000 个托盘位的仓为例，重排 A 类前 300 个货位通常需要 5—8 个夜班，白天正常收发货不受影响。关键是提前打印新货位编码，并在 WMS 里切换货位映射的时间点选在夜间。"}
+    },
+    {
+      "@type":"Question",
+      "name":"月台排队时间长，是加月台还是加装卸设备？",
+      "acceptedAnswer":{"@type":"Answer","text":"先算单月台日处理量上限。一个标准卸货月台配 1 台电动地牛，日处理约 60—82 托。若到货集中在上午 9—11 点，瓶颈在时段而非总量，把收货预约窗口拆成 20 分钟一档，可比加建月台更快见效。"}
+    },
+    {
+      "@type":"Question",
+      "name":"货架被叉车撞过，变形多少必须换梁？",
+      "acceptedAnswer":{"@type":"Answer","text":"横梁侧向弯曲超过跨距的 1/500，或上翼缘出现裂纹，建议直接更换。立柱底部变形超过 5 毫米或出现倾斜，须由货架厂评估，不能自行校正后继续使用。"}
+    }
+  ]
+}
+</script>
+</body>
+  </html>
